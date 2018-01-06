@@ -7,7 +7,7 @@
 <h2>Customers</h2>
 @if (!Model.Any())
 {
-	<p>There are no movies added</p>
+	<p>There are no Customers</p>
 }
 else
 {
@@ -21,7 +21,7 @@ else
 		@foreach (var cust in Model)
 		{
 			<tr>
-				<td>@Html.ActionLink(cust.Name, "Details", "Customers", new { id = cust.ID }, null)</td>
+				<td>@Html.ActionLink(cust.Name, "Edit", "Customers", new { id = cust.ID }, null)</td>
 				<td>@cust.MembershipType.DiscountRate%</td>
 			</tr>
 		}
