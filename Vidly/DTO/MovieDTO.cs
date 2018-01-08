@@ -27,5 +27,6 @@ namespace Vidly.DTO
 		[Required]
 		public short GenreId { get; set; }
 
+		public GenreDTO genre { get; set; }
 	}
 }
