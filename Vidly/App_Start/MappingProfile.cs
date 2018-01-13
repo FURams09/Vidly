@@ -12,17 +12,34 @@ namespace Vidly.App_Start
 
 		public MappingProfile()
 		{
-			Mapper.CreateMap<Customer, CustomerDTO>();
-			Mapper.CreateMap<Movie, MovieDTO>();
-			Mapper.CreateMap<MembershipType, MembershipTypeDTO>();
-			Mapper.CreateMap<Genre, GenreDTO>();
+			var customerCustomerDTOconfig = new MapperConfiguration(cfg =>
+			{
+				cfg.CreateMap<Customer, CustomerDTO>();
+			});
+			var movieMovieDTOconfig = new MapperConfiguration(cfg =>
+			{
+				cfg.CreateMap<Movie, MovieDTO>();
+			});
+			var membershipTypeMembershipTypeIDconfig = new MapperConfiguration(cfg =>
+			{
+				cfg.CreateMap<MembershipType, MembershipTypeDTO>();
+			});
+			var genreGenreDTOconfig = new MapperConfiguration(cfg =>
+			{
+				cfg.CreateMap<Genre, GenreDTO>();
+			});
 
-
-			Mapper.CreateMap<CustomerDTO, Customer>()
+			var customerDTOCustomerconfig = new MapperConfiguration(cfg =>
+			{
+				cfg.CreateMap<CustomerDTO, Customer>()
 				.ForMember(c => c.ID, opt => opt.Ignore());
-
-			Mapper.CreateMap<MovieDTO, Movie>()
+			});
+			var movieDTOMovieconfig = new MapperConfiguration(cfg =>
+			{
+				cfg.CreateMap<MovieDTO, Movie>()
 				.ForMember(c => c.ID, opt => opt.Ignore());
+			});
+
 		}
 		
 	}

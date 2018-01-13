@@ -19,43 +19,48 @@ namespace Vidly.Controllers
 		{
 			_context = new ApplicationDbContext();
 		}
-        // GET: Movies/Random
-        public ActionResult Random()
-        {
-			var movie = new Movie() { Name= "Shrek!" };
+  //      // GET: Movies/Random
+  //      public ActionResult Random()
+  //      {
+		//	var movie = new Movie() { Name= "Shrek!" };
 
-			var customers = new List<Customer>
-			{
-				new Customer  { Name = "Customer 1" },
-				new Customer { Name = "Customer 2" }
-			};
+		//	var customers = new List<Customer>
+		//	{
+		//		new Customer  { Name = "Customer 1" },
+		//		new Customer { Name = "Customer 2" }
+		//	};
 
-			var viewModel = new RandomMovieViewModel
-			{
-				Movie = movie,
-				Customers = customers
-			};
-            return View(viewModel);
-        }
+		//	var viewModel = new RandomMovieViewModel
+		//	{
+		//		Movie = movie,
+		//		Customers = customers
+		//	};
+  //          return View(viewModel);
+  //      }
 
-		[Route(@"movies/released/{year}/{month:regex(\d{4}):range(1,12)}")]
-		public ActionResult ByReleaseDate(int year, int month)
-		{
-			return Content(year + "/" + month);
-		}
+		//[Route(@"movies/released/{year}/{month:regex(\d{4}):range(1,12)}")]
+		//public ActionResult ByReleaseDate(int year, int month)
+		//{
+		//	return Content(year + "/" + month);
+		//}
 
 		public ActionResult Index()
 		{
-			var movies = _context.Movies.Include(c => c.Genre);
-
-			return View(movies);
+			if (User.IsInRole("CanManageMovies"))
+			{
+				var movies = _context.Movies.Include(c => c.Genre);
+				return View("List", movies);
+			}
+			return View("ReadOnlyList");
+			
 		}
 
-		public ActionResult New()
+		[Authorize(Roles = "canManageMovies")]
+		public ViewResult New()
 		{
 			var viewModel = new MovieViewModel
 			{
-				Genre = _context.Genre.ToList()
+				Genre = _context.Genres.ToList()
 			};
 			return View("MovieForm", viewModel);
 		}
@@ -84,7 +89,7 @@ namespace Vidly.Controllers
 			{
 				var viewModel = new MovieViewModel(movie)
 				{
-					Genre = _context.Genre.ToList()
+					Genre = _context.Genres.ToList()
 				};
 				return View("MovieForm", viewModel);
 			};
@@ -92,12 +97,13 @@ namespace Vidly.Controllers
 			return RedirectToAction("Index", "Movies");
 		}
 
+		[Authorize(Roles = "canManageMovies")]
 		public ViewResult Edit(int id)
 		{
 			var movie = _context.Movies.Include(c => c.Genre).SingleOrDefault(c => c.ID == id);
 			var viewModel = new MovieViewModel(movie)
 			{
-				Genre = _context.Genre.ToList()
+				Genre = _context.Genres.ToList()
 			};
 			return View("MovieForm", viewModel);
 		}

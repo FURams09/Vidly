@@ -8,6 +8,7 @@ using Vidly.ViewModels;
 
 namespace Vidly.Controllers
 {
+	//[Authorize] Also applied Globally in App_Start/FilterConfig
     public class CustomersController : Controller
     {
 
