@@ -26,6 +26,8 @@ namespace Vidly.Models
 		[Range(0, 20, ErrorMessage = "Stock must be between 0 and 20.")]
 		public short NoAvailable { get; set; }
 
+		public short NumberInStock { get; set; }
+
 		public Genre Genre { get; set; }
 
 		[Required]
